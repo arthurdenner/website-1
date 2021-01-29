@@ -22,33 +22,31 @@ class OnlineNewsDatasource implements NewsDatasource {
   @override
   Future<List<NewsItemModel>> getAllNews() async {
     _socialService.init();
-    final githubReleases =
-        await _socialService.getGithubReleases('flutter', 'flutter');
-    final mediumPostsDart = await _socialService.getMediumFeed('dartlang');
-    final mediumPostsFlutter = await _socialService.getMediumFeed('flutter');
+    // final githubReleases =
+    //     await _socialService.getGithubReleases('flutter', 'flutter');
+    // final mediumPostsDart = await _socialService.getMediumFeed('dartlang');
+    // final mediumPostsFlutter = await _socialService.getMediumFeed('flutter');
     final youtubeVideos =
         await _socialService.getYoutubeFeed('UCwXdFgeE9KYzlDdR7TG9cMw');
 
     var list = <NewsItemModel>[];
-    list.addAll(githubReleases.releases
-        .map((e) => NewsItemModel(
-              title: e.version,
-              link: e.link,
-              pubDate: e.updated,
-              type: githubReleases.title,
-            ))
-        .toList());
-    list.addAll(
-      _parsingPosts(mediumPostsDart.mediumPosts, mediumPostsDart.title),
-    );
-    list.addAll(
-      _parsingPosts(mediumPostsFlutter.mediumPosts, mediumPostsFlutter.title),
-    );
+    // list.addAll(githubReleases.releases
+    //     .map((e) => NewsItemModel(
+    //           title: e.version,
+    //           link: e.link,
+    //           pubDate: e.updated,
+    //           type: githubReleases.title,
+    //         ))
+    //     .toList());
+    // list.addAll(
+    //   _parsingPosts(mediumPostsDart.mediumPosts, mediumPostsDart.title),
+    // );
+    // list.addAll(
+    //   _parsingPosts(mediumPostsFlutter.mediumPosts, mediumPostsFlutter.title),
+    // );
     list.addAll(_parsingPosts(youtubeVideos.youtubePosts, youtubeVideos.title));
 
-    final formatter = DateFormat(r'''EEE, dd MMM yyyy hh:mm:ss Z''');
-    list.sort((a, b) =>
-        formatter.parse(b.pubDate).compareTo(formatter.parse(a.pubDate)));
+    list.sort((a, b) => b.pubDate.compareTo(a.pubDate));
     return Future.value(list);
   }
 
